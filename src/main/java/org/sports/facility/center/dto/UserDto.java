@@ -1,5 +1,17 @@
 package org.sports.facility.center.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto extends BaseDto {
 
 
@@ -13,4 +25,28 @@ public class UserDto extends BaseDto {
     private String phoneNumber;
     private String firstName;
     private String lastName;
+
+    public UserDto(Long id,
+                   String userName,
+                   String email,
+                   String roles) {
+        this.id=id;
+        this.userName=userName;
+        this.email=email;
+        this.roles=roles;
+    }
+
+    public UserDto(String firstName,
+                   String lastName,
+                   String address,
+                   String phoneNumber,
+                   Long userId,
+                   String userName) {
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.address=address;
+        this.phoneNumber=phoneNumber;
+        this.id=userId;
+        this.userName=userName;
+    }
 }

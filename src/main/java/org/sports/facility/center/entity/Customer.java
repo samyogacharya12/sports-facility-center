@@ -3,13 +3,13 @@ package org.sports.facility.center.entity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Data
-@Entity
-@Table(name = "administrator")
 @Builder
-public class Admin extends BaseEntity {
+@Entity
+@Table(name = "customer")
+public class Customer extends BaseEntity {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

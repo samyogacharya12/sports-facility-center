@@ -1,10 +1,12 @@
 package org.sports.facility.center.dto;
 
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
+@Data
 public class BaseDto {
 
     @CreationTimestamp
@@ -13,7 +15,7 @@ public class BaseDto {
     @UpdateTimestamp
     private LocalDateTime updatedDate;
 
-    private boolean deleted;
+    private Boolean deleted;
 
-    private boolean status;
+    private Boolean status;
 }

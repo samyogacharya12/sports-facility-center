@@ -5,14 +5,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sports.facility.center.dto.RegisterUserDto;
 import org.sports.facility.center.dto.UserDto;
+import org.sports.facility.center.dto.UserInfoDetails;
 import org.sports.facility.center.entity.User;
+import org.sports.facility.center.enumconstant.UserType;
+import org.sports.facility.center.exception.Invalid;
+import org.sports.facility.center.mapper.UserMapper;
+import org.sports.facility.center.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -21,6 +28,24 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+
+    @Autowired
+    private CustomerService customerService;
+
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserMapper userMapper;
+
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
+    @Autowired
+    private AdminService adminService;
 
 
 
@@ -47,7 +72,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return this.adminService.save(registerUserDto);
         } catch (Exception exception) {
             log.error("save {}", exception);
-        }    }
+        }
+        return null;
+    }
 
     @Override
     public UserDto update(UserDto userDto) {
@@ -55,8 +82,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDto findById(Long id) {
-        return null;
+    public UserDto findById(String token, Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.map(value -> userMapper.toDto(value)).orElse(null);
     }
 
     @Override
@@ -71,6 +99,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        Optional<User> userInfo = userRepository.findByName(username);
+        return userInfo.map(UserInfoDetails::new)
+            .orElseThrow(() -> new UsernameNotFoundException("user not found " + username));
     }
 }
