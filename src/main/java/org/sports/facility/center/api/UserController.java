@@ -3,7 +3,6 @@ package org.sports.facility.center.api;
 import org.sports.facility.center.dto.RegisterUserDto;
 import org.sports.facility.center.dto.UserDto;
 import org.sports.facility.center.service.AuthenticationService;
-import org.sports.facility.center.service.JwtService;
 import org.sports.facility.center.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -25,9 +24,6 @@ public class UserController {
     @Autowired
     public AuthenticationService authenticationService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
 
     @PostMapping("/save")
@@ -38,7 +34,7 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PostMapping("/fetch")
+    @GetMapping("/fetch")
     public ResponseEntity<UserDto> fetchUsers(@RequestParam(value = "id") Long id,
                                               @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         return new ResponseEntity<>(userService.findById(token,id), HttpStatus.OK);

@@ -24,8 +24,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -58,8 +57,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             if (optionalUser.isPresent()) {
                 throw new Invalid("Sorry UserName already exist", registerUserDto);
             }
-            User userOptional = this.userRepository.findByEmail(registerUserDto.getEmail());
-            if (Objects.nonNull(userOptional) && Objects.nonNull(userOptional.getId())) {
+            Optional<User> userOptional = this.userRepository.findByEmail(registerUserDto.getEmail());
+            if (userOptional.isPresent() && Objects.nonNull(userOptional.get().getId())) {
                 throw new Invalid("Sorry Email already exist", registerUserDto);
             }
             registerUserDto.setPassword(passwordEncoder.encode(registerUserDto.getPassword()));
@@ -97,10 +96,4 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return null;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userInfo = userRepository.findByName(username);
-        return userInfo.map(UserInfoDetails::new)
-            .orElseThrow(() -> new UsernameNotFoundException("user not found " + username));
-    }
 }

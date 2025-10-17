@@ -1,15 +1,24 @@
 package org.sports.facility.center.service;
 
 import org.sports.facility.center.dto.UserDto;
+import org.sports.facility.center.dto.UserInfoDetails;
+import org.sports.facility.center.entity.User;
+import org.sports.facility.center.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Service
-public class AuthenticationServiceImpl implements AuthenticationService{
+import java.util.Optional;
 
+@Service
+public class AuthenticationServiceImpl implements AuthenticationService {
+
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private  JwtService jwtService;
 
@@ -33,4 +42,5 @@ public class AuthenticationServiceImpl implements AuthenticationService{
             throw new RuntimeException("invalid access");
         }
     }
+
 }

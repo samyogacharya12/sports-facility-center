@@ -5,7 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.sports.facility.center.service.JwtService;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,11 +18,17 @@ import java.io.IOException;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
-    @Autowired
-    private JwtService jwtService; // your JWT utility (validateToken, extractUsername, etc.)
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final JwtService jwtService; // your JWT utility (validateToken, extractUsername, etc.)
+
+
+    private final UserDetailsService userDetailsService;
+
+
+    public JwtAuthFilter(JwtService jwtService, UserDetailsService userDetailsService){
+        this.jwtService=jwtService;
+        this.userDetailsService=userDetailsService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
