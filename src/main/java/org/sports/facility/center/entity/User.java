@@ -34,6 +34,19 @@ public class User extends BaseEntity {
     @Column(name = "roles")
     private UserType roles;
 
+    @Column(name = "firstName", nullable = false)
+    private String firstName;
+
+    @Column(name = "lastName", nullable = false)
+    private String lastName;
+
+
+    @Column(name = "address", nullable = false)
+    private String address;
+
+
+    @Column(name = "phoneNumber", nullable = false)
+    private String phoneNumber;
 
     public User(String userName,
                 String email,

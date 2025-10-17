@@ -7,7 +7,6 @@ import java.io.Serializable;
 @Data
 public class RegisterUserDto extends BaseDto implements Serializable {
 
-    private String name;
     private String email;
     private String password;
     private String roles;

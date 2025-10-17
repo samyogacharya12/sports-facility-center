@@ -49,13 +49,17 @@ public class UserMapperImpl implements UserMapper{
 
     @Override
     public User toEntity(RegisterUserDto registerUserDto) {
-        User user = new User(registerUserDto.getName(), registerUserDto.getEmail(),
+        User user = new User(registerUserDto.getUserName(), registerUserDto.getEmail(),
             registerUserDto.getPassword(),
             Enum.valueOf(UserType.class, registerUserDto.getRoles()));
         user.setCreatedDate(registerUserDto.getCreatedDate().toString());
         user.setUpdatedDate(registerUserDto.getUpdatedDate().toString());
         user.setStatus(true);
         user.setDeleted(false);
+        user.setFirstName(registerUserDto.getFirstName());
+        user.setLastName(registerUserDto.getLastName());
+        user.setAddress(registerUserDto.getAddress());
+        user.setPhoneNumber(registerUserDto.getPhoneNumber());
         return user;
     }
 }

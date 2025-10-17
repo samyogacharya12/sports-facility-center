@@ -9,12 +9,17 @@ import org.sports.facility.center.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class CustomerMapperImpl implements CustomerMapper{
+
+    @Autowired
+
+    private UserMapper userMapper;
     @Autowired
     private UserRepository userRepository;
 
@@ -42,13 +47,21 @@ public class CustomerMapperImpl implements CustomerMapper{
 
     @Override
     public UserDto toDto(RegisterUserDto registerUserDto) {
-        return new UserDto(
+        UserDto userDto= new UserDto(
             registerUserDto.getFirstName(),
             registerUserDto.getLastName()
             , registerUserDto.getAddress(),
             registerUserDto.getPhoneNumber(),
             registerUserDto.getUserId(),
-            registerUserDto.getUserName());
+            registerUserDto.getUserName(),
+            registerUserDto.getCreatedDate(),
+            registerUserDto.getUpdatedDate(),
+            registerUserDto.getEmail(),
+            registerUserDto.getPassword(),
+            registerUserDto.getRoles());
+        userDto.setCreatedDate(registerUserDto.getCreatedDate());
+        userDto.setUpdatedDate(registerUserDto.getUpdatedDate());
+        return userDto;
     }
 
     @Override
@@ -59,11 +72,15 @@ public class CustomerMapperImpl implements CustomerMapper{
 
     @Override
     public Customer toEntity(UserDto userDto) {
-        return Customer.builder()
+        Customer customer= Customer.builder()
             .firstName(userDto.getFirstName())
             .lastName(userDto.getLastName())
             .address(userDto.getAddress())
             .phoneNumber(userDto.getPhoneNumber())
+            .userInfo(userMapper.toEntity(userDto))
             .build();
+        customer.setCreatedDate(LocalDateTime.now().toString());
+        customer.setUpdatedDate(LocalDateTime.now().toString());
+        return customer;
     }
 }

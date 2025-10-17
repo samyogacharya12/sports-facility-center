@@ -43,7 +43,12 @@ public class AdminMapperImpl implements AdminMapper{
             , registerUserDto.getAddress(),
             registerUserDto.getPhoneNumber(),
             registerUserDto.getUserId(),
-            registerUserDto.getUserName());
+            registerUserDto.getUserName(),
+            registerUserDto.getCreatedDate(),
+            registerUserDto.getUpdatedDate(),
+            registerUserDto.getEmail(),
+            registerUserDto.getPassword(),
+            registerUserDto.getRoles());
         adminDto.setId(registerUserDto.getUserId());
         adminDto.setCreatedDate(registerUserDto.getCreatedDate());
         adminDto.setUpdatedDate(registerUserDto.getUpdatedDate());

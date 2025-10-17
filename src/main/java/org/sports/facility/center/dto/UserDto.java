@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -26,6 +28,10 @@ public class UserDto extends BaseDto {
     private String firstName;
     private String lastName;
 
+    private LocalDateTime createdDate;
+
+    private LocalDateTime updateDate;
+
     public UserDto(Long id,
                    String userName,
                    String email,
@@ -41,12 +47,23 @@ public class UserDto extends BaseDto {
                    String address,
                    String phoneNumber,
                    Long userId,
-                   String userName) {
+                   String userName,
+                   LocalDateTime createdDate,
+                   LocalDateTime updateDate,
+                   String email,
+                   String password,
+                   String roles) {
         this.firstName=firstName;
         this.lastName=lastName;
         this.address=address;
         this.phoneNumber=phoneNumber;
         this.id=userId;
         this.userName=userName;
+        this.createdDate=createdDate;
+        this.updateDate=updateDate;
+        this.email=email;
+        this.password=password;
+        this.roles=roles;
+
     }
 }

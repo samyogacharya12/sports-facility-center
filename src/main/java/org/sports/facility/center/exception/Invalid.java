@@ -10,4 +10,13 @@ public class Invalid extends RuntimeException {
         this.message = message;
         this.detail=detail;
     }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    public Object getDetail() {
+        return detail;
+    }
 }

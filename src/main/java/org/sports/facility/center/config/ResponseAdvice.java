@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import org.zalando.problem.DefaultProblem;
 import util.ResponseUtil;
 
-@RestControllerAdvice(basePackages = "org.sports.facility.api")
+@RestControllerAdvice(basePackages = "org.sports.facility.center.api")
 public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
     private static final Logger log = LoggerFactory.getLogger(ResponseAdvice.class);

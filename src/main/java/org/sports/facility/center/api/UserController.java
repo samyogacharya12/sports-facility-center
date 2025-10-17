@@ -1,5 +1,6 @@
 package org.sports.facility.center.api;
 
+import jakarta.mail.MessagingException;
 import org.sports.facility.center.dto.RegisterUserDto;
 import org.sports.facility.center.dto.UserDto;
 import org.sports.facility.center.service.AuthenticationService;
@@ -27,7 +28,7 @@ public class UserController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<UserDto> addNewUser(@RequestBody RegisterUserDto registerUserDto) {
+    public ResponseEntity<UserDto> addNewUser(@RequestBody RegisterUserDto registerUserDto) throws MessagingException {
         registerUserDto.setCreatedDate(LocalDateTime.now());
         registerUserDto.setUpdatedDate(LocalDateTime.now());
         UserDto user = this.userService.save(registerUserDto);
