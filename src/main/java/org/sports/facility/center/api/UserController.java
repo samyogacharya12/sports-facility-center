@@ -2,6 +2,7 @@ package org.sports.facility.center.api;
 
 import jakarta.mail.MessagingException;
 import org.sports.facility.center.dto.RegisterUserDto;
+import org.sports.facility.center.dto.RestResponse;
 import org.sports.facility.center.dto.UserDto;
 import org.sports.facility.center.service.AuthenticationService;
 import org.sports.facility.center.service.UserService;
@@ -42,7 +43,7 @@ public class UserController {
     }
 
     @GetMapping("/verify")
-    public ResponseEntity<String> fetchUsers(@RequestParam(value = "token") String token) {
+    public ResponseEntity<RestResponse> fetchUsers(@RequestParam(value = "token") String token) {
         return new ResponseEntity<>(userService.verifyAccount(token), HttpStatus.OK);
     }
 
