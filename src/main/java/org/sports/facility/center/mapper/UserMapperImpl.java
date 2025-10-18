@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserMapperImpl implements UserMapper{
+public class UserMapperImpl implements UserMapper {
     @Override
     public UserDto toDto(User user) {
         return mapToUserDto(user);
@@ -24,6 +24,9 @@ public class UserMapperImpl implements UserMapper{
             user.getRoles().toString());
         userDto.setCreatedDate(LocalDateTime.parse(user.getCreatedDate()));
         userDto.setUpdatedDate(LocalDateTime.parse(user.getUpdatedDate()));
+        userDto.setAddress(userDto.getAddress());
+        userDto.setFirstName(userDto.getFirstName());
+        userDto.setLastName(userDto.getLastName());
         userDto.setPassword(null);
         return userDto;
     }
@@ -54,7 +57,11 @@ public class UserMapperImpl implements UserMapper{
             Enum.valueOf(UserType.class, registerUserDto.getRoles()));
         user.setCreatedDate(registerUserDto.getCreatedDate().toString());
         user.setUpdatedDate(registerUserDto.getUpdatedDate().toString());
-        user.setStatus(true);
+        if(!user.getStatus()) {
+            user.setStatus(false);
+        }else {
+            user.setStatus(true);
+        }
         user.setDeleted(false);
         user.setFirstName(registerUserDto.getFirstName());
         user.setLastName(registerUserDto.getLastName());

@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sports.facility.center.dto.RegisterUserDto;
+import org.sports.facility.center.dto.RestResponse;
 import org.sports.facility.center.dto.UserDto;
 import org.sports.facility.center.entity.User;
 import org.sports.facility.center.enumconstant.UserType;
@@ -12,12 +13,14 @@ import org.sports.facility.center.exception.Invalid;
 import org.sports.facility.center.mapper.UserMapper;
 import org.sports.facility.center.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -47,8 +50,6 @@ public class UserServiceImpl implements UserService {
     private EmailService emailService;
 
 
-
-
     @Override
     public UserDto save(RegisterUserDto registerUserDto) throws MessagingException {
         log.debug("saving user");
@@ -63,22 +64,26 @@ public class UserServiceImpl implements UserService {
             }
             registerUserDto.setPassword(passwordEncoder.encode(registerUserDto.getPassword()));
             User user = this.userMapper.toEntity(registerUserDto);
+            String token = UUID.randomUUID().toString();
+            user.setVerificationToken(token);
+            user.setStatus(false);
             UserDto userDto = this.userMapper.toDto(userRepository.save(user));
             registerUserDto.setUserId(userDto.getId());
             userDto.setUserName(registerUserDto.getUserName());
             if (userDto.getRoles().equals(UserType.ROLE_CUSTOMER.toString())) {
                 if (Objects.nonNull(userDto.getId())) {
+                    String verificationUrl = "http://localhost:8090/users/verify?token=" + token;
+                    String htmlContent = "<p>Welcome, " + userDto.getUserName() + "!</p>"
+                        + "<p>Thank you for registering at Lambright Sports Facility Center Gym.</p>"
+                        + "<p>Please verify your email address by clicking the link below:</p>"
+                        + "<p><a href=\"" + verificationUrl + "\">Verify My Account</a></p>"
+                        + "<br>"
+                        + "<p>Best regards,<br>Lambright Sports Facility Center Team</p>";
                     emailService.sendHtmlEmail(
                         userDto.getEmail(),
                         "Registration for Lambright Sports Facility Center",
-                        "<h3>Welcome, " + userDto.getUserName() + "!</h3>" +
-                            "<p>Thank you for registering at <b>Lambright Sports Facility Center Gym</b>.</p>" +
-                            "<p>We’re excited to have you join our community!</p>" +
-                            "<p>Best regards,<br>Lambright Sports Facility Center Team</p>"
-                    );
+                        htmlContent, token);
                 }
-            } else {
-                userDto=this.adminService.save(registerUserDto);
             }
             return userDto;
 
@@ -109,4 +114,24 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public RestResponse verifyAccount(String token) {
+        try {
+            log.info("verifyAccount {}");
+            RestResponse restResponse = RestResponse.builder().build();
+            Optional<User> user = userRepository.findByVerificationToken(token);
+            if (user.isPresent()) {
+                user.get().setStatus(true);
+                restResponse.setMessage("Account verified successfully! You can now log in.");
+                restResponse.setStatus(HttpStatus.OK.toString());
+                return restResponse;
+            }
+            restResponse.setMessage("Invalid verification link.");
+            restResponse.setStatus(HttpStatus.FORBIDDEN.toString());
+            return restResponse;
+        } catch (Exception exception) {
+            log.error("verifyAccount {}", exception);
+        }
+        return null;
+    }
 }

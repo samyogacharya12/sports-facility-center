@@ -41,6 +41,11 @@ public class UserController {
         return new ResponseEntity<>(userService.findById(token,id), HttpStatus.OK);
     }
 
+    @GetMapping("/verify")
+    public ResponseEntity<String> fetchUsers(@RequestParam(value = "token") String token) {
+        return new ResponseEntity<>(userService.verifyAccount(token), HttpStatus.OK);
+    }
+
 
 
     @PostMapping("/login")

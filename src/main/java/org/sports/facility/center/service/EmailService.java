@@ -6,6 +6,10 @@ public interface EmailService {
 
     void sendEmail(String to, String subject, String text);
 
-    void sendHtmlEmail(String to, String subject, String htmlContent) throws MessagingException;
+    void sendHtmlEmail(String to, String subject, String htmlContent, String token) throws MessagingException;
+
+
+
+
 
 }

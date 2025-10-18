@@ -34,10 +34,10 @@ public class User extends BaseEntity {
     @Column(name = "roles")
     private UserType roles;
 
-    @Column(name = "firstName", nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "lastName", nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
 
@@ -45,8 +45,11 @@ public class User extends BaseEntity {
     private String address;
 
 
-    @Column(name = "phoneNumber", nullable = false)
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
+
+    @Column(name = "verification_token", nullable = false)
+    private String verificationToken;
 
     public User(String userName,
                 String email,

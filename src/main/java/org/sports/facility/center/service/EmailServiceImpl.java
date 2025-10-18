@@ -19,6 +19,8 @@ public class EmailServiceImpl implements EmailService{
      private JavaMailSender mailSender;
 
 
+
+
     @Value("${spring.mail.host}")
     private String host;
 
@@ -41,7 +43,7 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
-    public void sendHtmlEmail(String to, String subject, String htmlContent) throws MessagingException {
+    public void sendHtmlEmail(String to, String subject, String htmlContent, String verificationUrl) throws MessagingException {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(host);
         mailSender.setPort(port);
@@ -66,4 +68,5 @@ public class EmailServiceImpl implements EmailService{
 
         mailSender.send(message);
     }
+
 }

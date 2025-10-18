@@ -24,5 +24,5 @@ public class BaseEntity {
     private Boolean deleted=false;
 
     @Column(name = "status", nullable = false)
-    private Boolean status=true;
+    private Boolean status=false;
 }

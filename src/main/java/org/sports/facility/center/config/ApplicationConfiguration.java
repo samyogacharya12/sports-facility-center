@@ -1,6 +1,7 @@
 package org.sports.facility.center.config;
 
 import org.sports.facility.center.dto.UserInfoDetails;
+import org.sports.facility.center.entity.BaseEntity;
 import org.sports.facility.center.entity.User;
 import org.sports.facility.center.repository.UserRepository;
 import org.sports.facility.center.service.UserServiceImpl;
@@ -28,6 +29,7 @@ public class ApplicationConfiguration {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByName(username)
+            .filter(BaseEntity::getStatus)
             .map(UserInfoDetails::new)
             .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
