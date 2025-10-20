@@ -11,10 +11,6 @@ import lombok.Data;
 public class Customer extends BaseEntity {
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
 
     @Column(name = "firstName", nullable = false)
     private String firstName;

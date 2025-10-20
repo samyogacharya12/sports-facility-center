@@ -11,10 +11,6 @@ import lombok.EqualsAndHashCode;
 @Builder
 public class Admin extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
 
     @Column(name = "firstName", nullable = false)
     private String firstName;
@@ -34,4 +30,7 @@ public class Admin extends BaseEntity {
     @OneToOne(optional = false,cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User userInfo;
+
+
+
 }
