@@ -20,4 +20,12 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findActiveBookings(
         @Param("facilityId") Long facilityId,
         @Param("bookingDate") String bookingDate);
+
+
+
+    @Query("select b from Booking b where b.user.name=:userName")
+    List<Booking> findByUserName(@Param(value = "userName") String userName);
 }
+
+
+

@@ -17,10 +17,12 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class BookingDto extends BaseDto implements Serializable {
 
-
     private Long facilityId;
 
     private String facilityName;
+
+
+    private String imageUrl;
 
     private Long userId;
 

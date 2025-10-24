@@ -15,6 +15,7 @@ public class FacilityMapperImpl implements FacilityMapper{
         FacilityDto facilityDto=new FacilityDto();
         facilityDto.setFacilityName(facility.getFacilityName());
         facilityDto.setCapacity(facility.getCapacity());
+        facilityDto.setImageUrl(facility.getImageUrl());
         facilityDto.setOpeningTime(LocalTime.parse(facility.getOpeningTime()));
         facilityDto.setClosingTime(LocalTime.parse(facility.getClosingTime()));
         return facilityDto;
@@ -37,6 +38,7 @@ public class FacilityMapperImpl implements FacilityMapper{
             .description(facilityDto.getDescription())
             .capacity(facilityDto.getCapacity())
             .facilityName(facilityDto.getFacilityName())
+            .imageUrl(facilityDto.getImageUrl())
             .build();
     }
 }

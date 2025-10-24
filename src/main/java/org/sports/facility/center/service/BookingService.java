@@ -11,6 +11,8 @@ public interface BookingService {
 
     BookingDto save(BookingDto bookingDto);
 
+    List<BookingDto> findByUserName(BookingDto bookingDto);
+
     List<BookingDto> findAll();
 
 

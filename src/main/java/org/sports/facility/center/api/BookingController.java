@@ -29,6 +29,12 @@ public class BookingController {
         return new ResponseEntity<>(bookingService.save(bookingDto), HttpStatus.OK);
     }
 
+    @PostMapping("/user/bookings")
+    public ResponseEntity<List<BookingDto>> findByUserName(@RequestBody BookingDto bookingDto) {
+        log.info("save");
+        return new ResponseEntity<>(bookingService.findByUserName(bookingDto), HttpStatus.OK);
+    }
+
     @GetMapping("/bookings")
     public ResponseEntity<List<BookingDto>> findAll() {
         log.info("save");

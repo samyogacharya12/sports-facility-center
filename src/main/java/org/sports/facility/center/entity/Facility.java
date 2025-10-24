@@ -36,6 +36,10 @@ public class Facility extends BaseEntity {
     @Column(name = "closing_time")
     private String closingTime;
 
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @OneToMany(mappedBy = "facility", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Booking> bookingList;
 }

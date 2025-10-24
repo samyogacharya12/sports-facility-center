@@ -47,6 +47,12 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public List<BookingDto> findByUserName(BookingDto bookingDto) {
+        log.info("findByUserId()=>");
+        return bookingMapper.toDto(bookingRepository.findByUserName(bookingDto.getUsername()));
+    }
+
+    @Override
     public List<BookingDto> findAll() {
         log.info("findAll()=>");
         return bookingRepository.findAll().stream().map(bookingMapper::toDto).collect(Collectors.toList());

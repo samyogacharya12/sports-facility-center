@@ -21,6 +21,9 @@ public class FacilityDto extends BaseDto  implements Serializable {
     private String description;
 
 
+    private String imageUrl;
+
+
     private Integer capacity;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm a")

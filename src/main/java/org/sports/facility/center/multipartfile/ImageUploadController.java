@@ -8,10 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -33,12 +30,12 @@ public class ImageUploadController {
         }
     }
 
-    @PostMapping("/download")
-    public ResponseEntity<byte[]> downloadImage(@RequestBody ImageDto imageDto) {
+    @GetMapping("/download")
+    public ResponseEntity<byte[]> downloadImage(@RequestParam(value = "imageName") String imageName) {
         try {
-            byte[] content = gcsService.downloadFile(imageDto.getFileName());
+            byte[] content = gcsService.downloadFile(imageName);
             return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + imageDto.getFileName())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + imageName)
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(content);
         } catch (Exception e) {
