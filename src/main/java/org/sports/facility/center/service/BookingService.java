@@ -1,5 +1,6 @@
 package org.sports.facility.center.service;
 
+import jakarta.mail.MessagingException;
 import org.sports.facility.center.dto.BookingDto;
 import org.sports.facility.center.dto.TimeSlot;
 

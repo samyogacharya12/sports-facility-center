@@ -14,7 +14,9 @@ public interface UserService {
 
     UserDto update(UserDto userDto);
 
-    UserDto findById(String token,Long id);
+    UserDto findById(Long id);
+
+    UserDto findByUsername(String username);
 
     void delete(Long id);
 

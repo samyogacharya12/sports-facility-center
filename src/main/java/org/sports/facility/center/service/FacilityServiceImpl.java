@@ -66,6 +66,19 @@ public class FacilityServiceImpl implements FacilityService {
     }
 
     @Override
+    public List<FacilityDto> findByBookingDate(BookingDto bookingDto) {
+        log.info(" findByBookingDate() ");
+        List<FacilityDto> facilityDtoList= facilityRepository.findAll().stream().map(facilityMapper::toDto)
+            .toList();
+        facilityDtoList.forEach(facilityDto -> {
+            bookingDto.setFacilityId(facilityDto.getId());
+            List<TimeSlot> timeSlots=getAvailableSlots(bookingDto);
+            facilityDto.setTimeSlots(timeSlots);
+        });
+        return facilityDtoList;
+    }
+
+    @Override
     public List<TimeSlot> getAvailableSlots(BookingDto bookingDto) {
         Facility facility = facilityRepository.findById(bookingDto.getFacilityId())
             .orElseThrow(() -> new RuntimeException("Facility not found"));

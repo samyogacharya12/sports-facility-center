@@ -38,9 +38,14 @@ public class UserController {
     }
 
     @GetMapping("/fetch")
-    public ResponseEntity<UserDto> fetchUsers(@RequestParam(value = "id") Long id,
-                                              @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        return new ResponseEntity<>(userService.findById(token,id), HttpStatus.OK);
+    public ResponseEntity<UserDto> fetchUsers(@RequestParam(value = "id") Long id) {
+        return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/fetch/username")
+    public ResponseEntity<UserDto> fetchByUsername(@RequestBody UserDto userDto) {
+        UserDto userDto1= this.userService.findByUsername(userDto.getUserName());
+        return new ResponseEntity<>(userDto1, HttpStatus.OK);
     }
 
     @GetMapping("/verify")

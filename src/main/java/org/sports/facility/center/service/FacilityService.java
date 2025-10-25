@@ -14,5 +14,7 @@ public interface FacilityService {
 
     List<FacilityDto> findAll();
 
+    List<FacilityDto> findByBookingDate(BookingDto bookingDto);
+
     List<TimeSlot> getAvailableSlots(BookingDto bookingDto);
 }

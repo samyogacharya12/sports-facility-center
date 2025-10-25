@@ -31,6 +31,7 @@ public class BookingMapperImpl implements BookingMapper{
         bookingDto.setBookingStatus(booking.getBookingStatus().toString());
         bookingDto.setImageUrl(booking.getFacility().getImageUrl());
         bookingDto.setUserId(booking.getUser().getId());
+        bookingDto.setEmail(booking.getUser().getEmail());
         bookingDto.setUsername(booking.getUser().getName());
         bookingDto.setFacilityId(booking.getFacility().getId());
         bookingDto.setFacilityName(booking.getFacility().getFacilityName());

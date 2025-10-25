@@ -99,8 +99,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findById(String token, Long id) {
+    public UserDto findById(Long id) {
         Optional<User> user = userRepository.findById(id);
+        return user.map(value -> userMapper.toDto(value)).orElse(null);
+    }
+
+    @Override
+    public UserDto findByUsername(String username) {
+        log.info("findByUsername()=>");
+        Optional<User> user = userRepository.findByName(username);
         return user.map(value -> userMapper.toDto(value)).orElse(null);
     }
 

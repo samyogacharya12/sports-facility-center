@@ -1,10 +1,12 @@
 package org.sports.facility.center.service;
 
+import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.sports.facility.center.dto.BookingDto;
 import org.sports.facility.center.dto.TimeSlot;
 import org.sports.facility.center.entity.Booking;
 import org.sports.facility.center.entity.Facility;
+import org.sports.facility.center.enumconstant.BookingStatus;
 import org.sports.facility.center.mapper.BookingMapper;
 import org.sports.facility.center.repository.BookingRepository;
 import org.sports.facility.center.repository.FacilityRepository;
@@ -34,16 +36,31 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private FacilityRepository facilityRepository;
 
+    @Autowired
+    private EmailService emailService;
+
 
     @Override
     public BookingDto save(BookingDto bookingDto) {
         log.info("saving booking information");
-        Booking booking = this.bookingMapper.toEntity(bookingDto);
-        booking.setCreatedDate(LocalDateTime.now().toString());
-        booking.setUpdatedDate(LocalDateTime.now().toString());
-        booking.setStatus(true);
-        booking.setDeleted(false);
-        return bookingMapper.toDto(bookingRepository.save(booking));
+        try {
+            Booking booking = this.bookingMapper.toEntity(bookingDto);
+            booking.setCreatedDate(LocalDateTime.now().toString());
+            booking.setUpdatedDate(LocalDateTime.now().toString());
+            booking.setStatus(true);
+            booking.setDeleted(false);
+            bookingDto = bookingMapper.toDto(bookingRepository.save(booking));
+            if (bookingDto.getBookingStatus().equalsIgnoreCase(BookingStatus.BOOKED.toString())) {
+                emailService.sendBookingConfirmationEmail(bookingDto.getEmail(),
+                    bookingDto.getUsername(), bookingDto.getFacilityName(), bookingDto.getBookingDate().toString(),
+                    bookingDto.getStartTime().toString(), bookingDto.getEndTime().toString(),
+                    bookingDto.getBookingStatus());
+            }
+            return bookingDto;
+        } catch (Exception exception) {
+            log.error("Error while saving booking", exception);
+        }
+        return null;
     }
 
     @Override

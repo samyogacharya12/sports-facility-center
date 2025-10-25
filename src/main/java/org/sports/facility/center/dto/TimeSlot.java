@@ -15,6 +15,7 @@ import java.time.LocalTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TimeSlot {
 
+
     private LocalTime start;
     private LocalTime end;
 }

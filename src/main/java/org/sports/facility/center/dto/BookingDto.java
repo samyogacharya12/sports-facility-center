@@ -28,6 +28,8 @@ public class BookingDto extends BaseDto implements Serializable {
 
     private String username;
 
+    private String email;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate bookingDate;
 
