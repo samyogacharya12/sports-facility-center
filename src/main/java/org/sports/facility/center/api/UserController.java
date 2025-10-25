@@ -28,6 +28,7 @@ public class UserController {
 
 
 
+
     @PostMapping("/save")
     public ResponseEntity<UserDto> addNewUser(@RequestBody RegisterUserDto registerUserDto) throws MessagingException {
         registerUserDto.setCreatedDate(LocalDateTime.now());

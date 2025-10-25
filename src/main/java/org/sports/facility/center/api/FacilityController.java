@@ -20,10 +20,16 @@ public class FacilityController {
     private FacilityService facilityService;
 
 
-    @PostMapping("/facility")
+    @PostMapping("/facilities")
     public ResponseEntity<FacilityDto> save(@RequestBody FacilityDto facilityDto) {
         log.info("FacilityController save()=>");
         return new ResponseEntity<>(facilityService.save(facilityDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/facilities")
+    public ResponseEntity<List<FacilityDto>> findAll() {
+        log.info("FacilityController findAll()=>");
+        return new ResponseEntity<>(facilityService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/available-slots")

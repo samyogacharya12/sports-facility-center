@@ -11,5 +11,8 @@ public interface FacilityService {
 
     FacilityDto save(FacilityDto facilityDto);
 
+
+    List<FacilityDto> findAll();
+
     List<TimeSlot> getAvailableSlots(BookingDto bookingDto);
 }

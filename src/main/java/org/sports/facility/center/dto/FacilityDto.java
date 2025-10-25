@@ -6,9 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
 import java.time.LocalTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -31,5 +31,7 @@ public class FacilityDto extends BaseDto  implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm a")
     private LocalTime closingTime;
+
+    private List<TimeSlot> timeSlots;
 
 }

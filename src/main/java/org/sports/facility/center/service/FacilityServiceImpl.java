@@ -50,6 +50,22 @@ public class FacilityServiceImpl implements FacilityService {
     }
 
     @Override
+    public List<FacilityDto> findAll() {
+        log.info("fetch findAll()");
+        List<FacilityDto> facilityDtoList= facilityRepository.findAll().stream().map(facilityMapper::toDto)
+            .toList();
+        facilityDtoList.forEach(facilityDto -> {
+            BookingDto bookingDto= BookingDto.builder()
+                .facilityId(facilityDto.getId())
+                .bookingDate(facilityDto.getCreatedDate().toLocalDate())
+                .build();
+            List<TimeSlot> timeSlots=getAvailableSlots(bookingDto);
+            facilityDto.setTimeSlots(timeSlots);
+        });
+        return facilityDtoList;
+    }
+
+    @Override
     public List<TimeSlot> getAvailableSlots(BookingDto bookingDto) {
         Facility facility = facilityRepository.findById(bookingDto.getFacilityId())
             .orElseThrow(() -> new RuntimeException("Facility not found"));
@@ -58,7 +74,8 @@ public class FacilityServiceImpl implements FacilityService {
         LocalTime close = LocalTime.parse(facility.getClosingTime());
 
         // Fetch booked slots for the date
-        List<Booking> bookings = bookingRepository.findActiveBookings(bookingDto.getFacilityId(),
+        List<Booking> bookings = bookingRepository.findActiveBookings(bookingDto
+                .getFacilityId(),
             bookingDto.getBookingDate().toString());
 
         // Convert booked slots into a list of TimeSlot objects
