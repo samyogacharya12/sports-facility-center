@@ -112,7 +112,7 @@ public class EmailServiceImpl implements EmailService{
                                        </p>
 
                                        <p>
-                                           If another group also makes a booking for the same time slot before the start time, your reservation will be
+                                           If another interested group also makes a half booking request for the same time slot before the start time, your reservation will be
                                            <strong>confirmed automatically</strong>.
                                        </p>
 
