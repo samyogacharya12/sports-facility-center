@@ -51,15 +51,13 @@ public class BookingServiceImpl implements BookingService {
             booking.setStatus(true);
             booking.setDeleted(false);
             bookingDto = bookingMapper.toDto(bookingRepository.save(booking));
-            String startTime= DateUtil.convertTo24Hours(bookingDto.getStartTime().toString());
-            String endTime=DateUtil.convertTo24Hours(bookingDto.getEndTime().toString());
-            if (bookingDto.getBookingStatus().equalsIgnoreCase(BookingStatus.BOOKED.toString())) {
-                emailService.sendBookingConfirmationEmail(bookingDto.getEmail(),
-                    bookingDto.getUsername(), bookingDto.getFacilityName(),
-                    bookingDto.getBookingDate().toString(),
-                    startTime, endTime,
-                    bookingDto.getBookingStatus());
-            }
+            String startTime = DateUtil.convertTo24Hours(bookingDto.getStartTime().toString());
+            String endTime = DateUtil.convertTo24Hours(bookingDto.getEndTime().toString());
+            emailService.sendBookingConfirmationEmail(bookingDto.getEmail(),
+                bookingDto.getUsername(), bookingDto.getFacilityName(),
+                bookingDto.getBookingDate().toString(),
+                startTime, endTime,
+                bookingDto.getBookingStatus());
             return bookingDto;
         } catch (Exception exception) {
             log.error("Error while saving booking", exception);
