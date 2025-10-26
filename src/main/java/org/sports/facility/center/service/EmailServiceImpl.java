@@ -58,33 +58,31 @@ public class EmailServiceImpl implements EmailService{
         int currentYear = java.time.Year.now().getValue();
 
         return """
-                <html>
-                <body style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f9f9f9; padding: 20px;">
-                    <div style="max-width:600px; margin:auto; background:#fff; padding:25px; border-radius:10px;">
-                        <div style="background-color:#1976d2; color:#fff; padding:15px; text-align:center; border-radius:8px 8px 0 0;">
-                            <h2>Booking Confirmed!</h2>
-                        </div>
-                        <div style="margin-top:20px;">
-                            <p>Dear <strong>%s</strong>,</p>
-                            <p>Thank you for booking with <strong>Sports Facility Center</strong>! Your reservation has been confirmed.</p>
-                            <div style="background:#f2f8ff; padding:15px; border-radius:8px; margin-top:10px;">
-                                <p><strong>Facility:</strong> %s</p>
-                                <p><strong>Date:</strong> %s</p>
-                                <p><strong>Time Slot:</strong> %s - %s</p>
-                                <p><strong>Booking Type:</strong> %s</p>
-                            </div>
-                            <p>Please arrive at least <strong>10 minutes early</strong> before your slot begins.</p>
-                            <p>You can manage your booking here:</p>
-                            <a href="%s" style="display:inline-block; background:#1976d2; color:white; padding:10px 20px; border-radius:5px; text-decoration:none;">View My Booking</a>
-                            <p style="margin-top:20px;">We look forward to seeing you! 🏆</p>
-                        </div>
-                        <div style="text-align:center; font-size:14px; color:#666; margin-top:20px;">
-                            Sports Facility Center<br/>© %d All rights reserved.
-                        </div>
+            <html>
+            <body style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f9f9f9; padding: 20px;">
+                <div style="max-width:600px; margin:auto; background:#fff; padding:25px; border-radius:10px;">
+                    <div style="background-color:#1976d2; color:#fff; padding:15px; text-align:center; border-radius:8px 8px 0 0;">
+                        <h2>Booking Confirmed!</h2>
                     </div>
-                </body>
-                </html>
-                """.formatted(userName, facilityName, bookingDate, startTime, endTime, bookingType, currentYear);
+                    <div style="margin-top:20px;">
+                        <p>Dear <strong>%s</strong>,</p>
+                        <p>Thank you for booking with <strong>Sports Facility Center</strong>! Your reservation has been confirmed.</p>
+                        <div style="background:#f2f8ff; padding:15px; border-radius:8px; margin-top:10px;">
+                            <p><strong>Facility:</strong> %s</p>
+                            <p><strong>Date:</strong> %s</p>
+                            <p><strong>Time Slot:</strong> %s - %s</p>
+                            <p><strong>Booking Type:</strong> %s</p>
+                        </div>
+                        <p>Please arrive at least <strong>10 minutes early</strong> before your slot begins.</p>
+                        <p style="margin-top:20px;">We look forward to seeing you! 🏆</p>
+                    </div>
+                    <div style="text-align:center; font-size:14px; color:#666; margin-top:20px;">
+                        Sports Facility Center<br/>© %d All rights reserved.
+                    </div>
+                </div>
+            </body>
+            </html>
+            """.formatted(userName, facilityName, bookingDate, startTime, endTime, bookingType, currentYear);
     }
 
     @Override

@@ -12,6 +12,7 @@ import org.sports.facility.center.repository.BookingRepository;
 import org.sports.facility.center.repository.FacilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import util.DateUtil;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -50,10 +51,13 @@ public class BookingServiceImpl implements BookingService {
             booking.setStatus(true);
             booking.setDeleted(false);
             bookingDto = bookingMapper.toDto(bookingRepository.save(booking));
+            String startTime= DateUtil.convertTo24Hours(bookingDto.getStartTime().toString());
+            String endTime=DateUtil.convertTo24Hours(bookingDto.getEndTime().toString());
             if (bookingDto.getBookingStatus().equalsIgnoreCase(BookingStatus.BOOKED.toString())) {
                 emailService.sendBookingConfirmationEmail(bookingDto.getEmail(),
-                    bookingDto.getUsername(), bookingDto.getFacilityName(), bookingDto.getBookingDate().toString(),
-                    bookingDto.getStartTime().toString(), bookingDto.getEndTime().toString(),
+                    bookingDto.getUsername(), bookingDto.getFacilityName(),
+                    bookingDto.getBookingDate().toString(),
+                    startTime, endTime,
                     bookingDto.getBookingStatus());
             }
             return bookingDto;

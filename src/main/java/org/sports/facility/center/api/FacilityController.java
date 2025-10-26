@@ -38,9 +38,6 @@ public class FacilityController {
         return new ResponseEntity<>(facilityService.findByBookingDate(bookingDto), HttpStatus.OK);
     }
 
-
-
-
     @PostMapping("/available-slots")
     public ResponseEntity<List<TimeSlot>> getAvailableSlots(@RequestBody BookingDto bookingDto) {
         List<TimeSlot> slots = facilityService.getAvailableSlots(bookingDto);
