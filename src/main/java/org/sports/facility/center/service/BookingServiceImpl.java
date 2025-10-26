@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,12 +46,64 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto save(BookingDto bookingDto) {
         log.info("saving booking information");
         try {
+            List<Booking> bookings = bookingRepository
+                .findByFacilityIdAndBookingStatusAndBookingDateAndStartTimeAndEndTime(
+                    bookingDto
+                        .getFacilityId(),
+                    BookingStatus.HALF_BOOKED,
+                    bookingDto.getBookingDate().toString(),
+                    bookingDto.getStartTime().toString(),
+                    bookingDto.getEndTime().toString()
+                );
+            if (bookingDto.getBookingStatus()
+                .equalsIgnoreCase(BookingStatus.HALF_BOOKED.toString())) {
+                if (Objects.nonNull(bookings) && !bookings.isEmpty()) {
+                    bookings.forEach(booking1 -> {
+                        booking1.setBookingStatus(BookingStatus.BOOKED);
+                        booking1.setUpdatedDate(LocalDateTime.now().toString());
+                        bookingRepository.save(booking1);
+                        String startTime = DateUtil.convertTo24Hours(booking1.getStartTime());
+                        String endTime = DateUtil.convertTo24Hours(booking1.getEndTime());
+                        try {
+                            emailService.sendBookingConfirmationEmail(booking1.getUser().getEmail(),
+                                booking1.getUser().getName(),
+                                booking1.getFacility().getFacilityName(),
+                                booking1.getBookingDate(),
+                                startTime,
+                                endTime,
+                                booking1.getBookingStatus().toString());
+                        } catch (Exception exception) {
+                            log.error("error while sending booking email", exception);
+                        }
+                    });
+                }
+            } else if (bookingDto.getBookingStatus()
+                .equalsIgnoreCase(BookingStatus.BOOKED.toString())) {
+                bookings.forEach(booking1 -> {
+                    booking1.setBookingStatus(BookingStatus.CANCELLED);
+                    booking1.setUpdatedDate(LocalDateTime.now().toString());
+                    bookingRepository.save(booking1);
+                    String startTime = DateUtil.convertTo24Hours(booking1.getStartTime());
+                    String endTime = DateUtil.convertTo24Hours(booking1.getEndTime());
+                    emailService.sendCancellationEmail(booking1.getUser().getEmail(),
+                        booking1.getUser().getName(), booking1.getFacility().getFacilityName(),
+                        booking1.getBookingDate(), startTime,
+                        endTime, false, booking1.getBookingStatus().toString()
+                    );
+                });
+            }
             Booking booking = this.bookingMapper.toEntity(bookingDto);
             booking.setCreatedDate(LocalDateTime.now().toString());
             booking.setUpdatedDate(LocalDateTime.now().toString());
             booking.setStatus(true);
             booking.setDeleted(false);
-            bookingDto = bookingMapper.toDto(bookingRepository.save(booking));
+            if(Objects.nonNull(bookings) && !bookings.isEmpty()){
+                booking.setBookingStatus(BookingStatus.BOOKED);
+                bookingDto = bookingMapper.toDto(bookingRepository.save(booking));
+            }
+            else {
+                bookingDto = bookingMapper.toDto(bookingRepository.save(booking));
+            }
             String startTime = DateUtil.convertTo24Hours(bookingDto.getStartTime().toString());
             String endTime = DateUtil.convertTo24Hours(bookingDto.getEndTime().toString());
             emailService.sendBookingConfirmationEmail(bookingDto.getEmail(),
@@ -63,6 +116,28 @@ public class BookingServiceImpl implements BookingService {
             log.error("Error while saving booking", exception);
         }
         return null;
+    }
+
+    @Override
+    public BookingDto cancelBooking(BookingDto bookingDto) {
+        log.info("cancel Booking");
+        List<Booking> bookings = bookingRepository
+            .findByFacilityIdAndBookingDateAndStartTimeAndEndTime(bookingDto.getFacilityId(),
+                bookingDto.getBookingDate().toString(), bookingDto.getStartTime().toString(),
+                bookingDto.getEndTime().toString());
+        bookings.forEach(booking -> {
+            booking.setUpdatedDate(LocalDateTime.now().toString());
+            booking.setBookingStatus(BookingStatus.CANCELLED);
+            bookingRepository.save(booking);
+            String startTime = DateUtil.convertTo24Hours(booking.getStartTime());
+            String endTime = DateUtil.convertTo24Hours(booking.getEndTime());
+            emailService.sendCancellationEmail(booking.getUser().getEmail(),
+                booking.getUser().getName(), booking.getFacility().getFacilityName(),
+                booking.getFacility().getFacilityName(),
+                startTime, endTime, true,
+                booking.getBookingStatus().toString());
+        });
+        return bookingDto;
     }
 
     @Override

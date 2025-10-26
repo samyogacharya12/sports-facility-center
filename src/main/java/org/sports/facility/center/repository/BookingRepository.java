@@ -2,6 +2,7 @@ package org.sports.facility.center.repository;
 
 import org.sports.facility.center.entity.Booking;
 import org.sports.facility.center.entity.Customer;
+import org.sports.facility.center.enumconstant.BookingStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +17,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("SELECT b FROM Booking b " +
         "WHERE b.facility.id = :facilityId " +
         "AND b.bookingDate = :bookingDate " +
-        "AND b.bookingStatus IN ('BOOKED', 'HALF_BOOKED')")
+        "AND b.bookingStatus IN ('BOOKED')")
     List<Booking> findActiveBookings(
         @Param("facilityId") Long facilityId,
         @Param("bookingDate") String bookingDate);
@@ -25,7 +26,18 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     @Query("select b from Booking b where b.user.name=:userName")
     List<Booking> findByUserName(@Param(value = "userName") String userName);
-}
 
+
+    List<Booking> findByFacilityIdAndBookingStatusAndBookingDateAndStartTimeAndEndTime(Long facilityId,
+                                                                         BookingStatus bookingStatus,
+                                                                         String bookedDate,
+                                                                         String startTime,
+                                                                         String endTime);
+
+    List<Booking> findByFacilityIdAndBookingDateAndStartTimeAndEndTime(Long facilityId,
+                                                                                       String bookedDate,
+                                                                                       String startTime,
+                                                                                       String endTime);
+}
 
 

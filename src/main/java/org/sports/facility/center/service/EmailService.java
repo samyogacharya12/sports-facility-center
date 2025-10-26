@@ -11,8 +11,14 @@ public interface EmailService {
     void sendBookingConfirmationEmail(String toEmail, String userName,
                                       String facilityName, String bookingDate,
                                       String startTime, String endTime,
-                                      String bookingType)  throws MessagingException;
+                                      String bookingType) throws MessagingException;
 
+
+    void sendCancellationEmail(String toEmail,
+                               String userName, String facilityName,
+                               String bookingDate, String startTime,
+                               String endTime, boolean isUserCancelled,
+                               String bookingType);
 
 
 }
