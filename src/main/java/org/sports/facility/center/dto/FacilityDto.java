@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.List;
@@ -33,5 +35,7 @@ public class FacilityDto extends BaseDto  implements Serializable {
     private LocalTime closingTime;
 
     private List<TimeSlot> timeSlots;
+
+    private MultipartFile file;
 
 }

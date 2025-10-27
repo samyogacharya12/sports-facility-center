@@ -3,6 +3,8 @@ package org.sports.facility.center.service;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.sports.facility.center.dto.FacilityDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,27 +23,30 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
     @Value("${gcp.bucket.name}")
     private String bucketName;
 
+
+    @Autowired
+    private FacilityService facilityService;
+
     public GoogleCloudStorageServiceImpl(Storage storage) {
         this.storage = storage;
     }
 
 
     @Override
-    public String uploadImage(MultipartFile file) {
+    public FacilityDto uploadImage(FacilityDto facilityDto) {
         try {
             log.info("uploadImage ");
-            String fileName = UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
+            String fileName = UUID.randomUUID().toString() + "-" + facilityDto.getFile().getOriginalFilename();
+            BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, fileName).setContentType(facilityDto.getFile().getContentType()).build();
 
-            BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, fileName)
-                .setContentType(file.getContentType())
-                .build();
-
-            storage.create(blobInfo, file.getBytes());
-
+            storage.create(blobInfo, facilityDto.getFile().getBytes());
+//            String imageUrl=String.format("https://storage.cloud.google.com/sports-facility-uploads/%s/%s", bucketName, fileName);
+            String imageUrl = "http://localhost:8090/images/download?imageName=" + fileName;
+            facilityDto.setImageUrl(imageUrl);
+            return facilityService.save(facilityDto);
             // Public URL
-            return String.format("https://storage.cloud.google.com/sports-facility-uploads/%s/%s", bucketName, fileName);
         } catch (Exception exception) {
-            log.error("Error in uploadImage ",exception);
+            log.error("Error in uploadImage ", exception);
         }
         return null;
     }
