@@ -70,9 +70,9 @@ public class UserServiceImpl implements UserService {
             UserDto userDto = this.userMapper.toDto(userRepository.save(user));
             registerUserDto.setUserId(userDto.getId());
             userDto.setUserName(registerUserDto.getUserName());
-            if (userDto.getRoles().equals(UserType.ROLE_CUSTOMER.toString())) {
+            if (userDto.getRoles().equals(UserType.ROLE_USER.toString())) {
                 if (Objects.nonNull(userDto.getId())) {
-                    String verificationUrl = "http://localhost:8090/users/verify?token=" + token;
+                    String verificationUrl = "https://backend-dot-poetic-centaur-477503-u6.uc.r.appspot.com/users/verify?token=" + token;
                     String htmlContent = "<p>Welcome, " + userDto.getUserName() + "!</p>"
                         + "<p>Thank you for registering at Lambright Sports Facility Center Gym.</p>"
                         + "<p>Please verify your email address by clicking the link below:</p>"

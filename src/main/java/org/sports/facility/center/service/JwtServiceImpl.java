@@ -18,10 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 @Service
@@ -59,7 +56,7 @@ public class JwtServiceImpl implements JwtService{
     @Override
     public boolean validateToken(String token, UserDetails userInfoDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userInfoDetails.getUsername())) && !isTokenExpired(token);
+        return (username.contains(userInfoDetails.getUsername())) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {

@@ -41,7 +41,7 @@ public class SecurityConfig {
         return http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/*", "/users/save","/users/verify" ,"/users/login","/images/download").permitAll()
+                .requestMatchers("/api/**", "/users/save","/users/verify" ,"/users/login","/images/*").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -57,7 +57,7 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // allow all endpoints
-                    .allowedOrigins("http://localhost:4200") // your frontend URL
+                    .allowedOrigins("https://poetic-centaur-477503-u6.uc.r.appspot.com") // your frontend URL
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*")
                     .allowCredentials(true);

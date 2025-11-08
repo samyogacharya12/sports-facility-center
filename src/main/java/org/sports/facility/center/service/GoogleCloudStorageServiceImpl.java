@@ -41,10 +41,9 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
 
             storage.create(blobInfo, facilityDto.getFile().getBytes());
 //            String imageUrl=String.format("https://storage.cloud.google.com/sports-facility-uploads/%s/%s", bucketName, fileName);
-            String imageUrl = "http://localhost:8090/images/download?imageName=" + fileName;
+            String imageUrl = "https://backend-dot-poetic-centaur-477503-u6.uc.r.appspot.com/images/download?imageName=" + fileName;
             facilityDto.setImageUrl(imageUrl);
             return facilityService.save(facilityDto);
-            // Public URL
         } catch (Exception exception) {
             log.error("Error in uploadImage ", exception);
         }

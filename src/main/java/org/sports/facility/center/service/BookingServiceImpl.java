@@ -1,11 +1,8 @@
 package org.sports.facility.center.service;
 
-import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.sports.facility.center.dto.BookingDto;
-import org.sports.facility.center.dto.TimeSlot;
 import org.sports.facility.center.entity.Booking;
-import org.sports.facility.center.entity.Facility;
 import org.sports.facility.center.enumconstant.BookingStatus;
 import org.sports.facility.center.mapper.BookingMapper;
 import org.sports.facility.center.repository.BookingRepository;
@@ -14,11 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import util.DateUtil;
 
-import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -121,10 +114,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingDto cancelBooking(BookingDto bookingDto) {
         log.info("cancel Booking");
-        List<Booking> bookings = bookingRepository
-            .findByFacilityIdAndBookingDateAndStartTimeAndEndTime(bookingDto.getFacilityId(),
-                bookingDto.getBookingDate().toString(), bookingDto.getStartTime().toString(),
-                bookingDto.getEndTime().toString());
+        List<Booking> bookings = bookingRepository.findByFacilityIdAndBookingDateAndStartTimeAndEndTime(bookingDto.getFacilityId(), bookingDto.getBookingDate().toString(), bookingDto.getStartTime().toString(), bookingDto.getEndTime().toString());
         bookings.forEach(booking -> {
             booking.setUpdatedDate(LocalDateTime.now().toString());
             booking.setBookingStatus(BookingStatus.CANCELLED);
@@ -132,9 +122,12 @@ public class BookingServiceImpl implements BookingService {
             String startTime = DateUtil.convertTo24Hours(booking.getStartTime());
             String endTime = DateUtil.convertTo24Hours(booking.getEndTime());
             emailService.sendCancellationEmail(booking.getUser().getEmail(),
-                booking.getUser().getName(), booking.getFacility().getFacilityName(),
+                booking.getUser().getName(),
                 booking.getFacility().getFacilityName(),
-                startTime, endTime, true,
+                booking.getFacility().getFacilityName(),
+                startTime,
+                endTime,
+                true,
                 booking.getBookingStatus().toString());
         });
         return bookingDto;
