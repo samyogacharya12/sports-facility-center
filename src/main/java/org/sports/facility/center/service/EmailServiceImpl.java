@@ -64,7 +64,7 @@ public class EmailServiceImpl implements EmailService {
                     </div>
                     <div style="margin-top:20px;">
                         <p>Dear <strong>%s</strong>,</p>
-                        <p>Thank you for booking with <strong>Sports Facility Center</strong>! Your reservation has been confirmed.</p>
+                        <p>Thank you for booking with <strong>Sports Facility Center</strong>! Your reservation has been confirmed please contact +3184970 for the further information.</p>
                         <div style="background:#f2f8ff; padding:15px; border-radius:8px; margin-top:10px;">
                             <p><strong>Facility:</strong> %s</p>
                             <p><strong>Date:</strong> %s</p>
