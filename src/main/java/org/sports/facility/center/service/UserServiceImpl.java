@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
                 if (Objects.nonNull(userDto.getId())) {
                     String verificationUrl = "https://backend-dot-poetic-centaur-477503-u6.uc.r.appspot.com/users/verify?token=" + token;
                     String htmlContent = "<p>Welcome, " + userDto.getUserName() + "!</p>"
-                        + "<p>Thank you for registering at Lambright Sports Facility Center Gym.</p>"
+                        + "<p>Thank you for registering at Sports Facility Center Gym.</p>"
                         + "<p>Please verify your email address by clicking the link below:</p>"
                         + "<p><a href=\"" + verificationUrl + "\">Verify My Account</a></p>"
                         + "<br>"
